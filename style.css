@@ -1,3 +1,9 @@
+<style>
+  * {
+    cursor: url('cursor.png') 0 0, auto;
+  }
+</style>
+
 body {
   margin: 0;
   font-family: 'Special Elite', 'Courier New', monospace;
