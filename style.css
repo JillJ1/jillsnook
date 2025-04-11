@@ -186,3 +186,25 @@ body {
   color: #5f5502;
 }
 
+/* ✨ Tape Styling ✨ */
+.tape {
+  position: absolute;
+  width: 30px;
+  height: 15px;
+  background: #f5d97a; /* light yellow tape */
+  opacity: 0.75;
+  z-index: 4;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tape.top-left {
+  top: -8px;
+  left: -10px;
+  transform: rotate(-10deg);
+}
+
+.tape.top-right {
+  top: -8px;
+  right: -10px;
+  transform: rotate(10deg);
+}
