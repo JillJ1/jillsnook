@@ -229,7 +229,7 @@ body {
   background: url('star.PNG') no-repeat center/contain;
   pointer-events: none;
   animation: sparkle-fade 1s ease-out forwards;
-  z-index: 99;
+  z-index: 9999;
 }
 
 @keyframes sparkle-fade {
@@ -242,3 +242,4 @@ body {
     transform: scale(1.8) rotate(45deg);
   }
 }
+
