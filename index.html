@@ -107,32 +107,39 @@
       offsetX = e.offsetX;
       offsetY = e.offsetY;
       sticker.style.cursor = 'grabbing';
+
+      // Bring sticker to front
+      sticker.style.zIndex = 999;
     });
 
     document.addEventListener('mousemove', e => {
-      if (isDragging) {
+      if (isDragging && sticker) {
         sticker.style.left = `${e.pageX - offsetX}px`;
         sticker.style.top = `${e.pageY - offsetY}px`;
       }
     });
 
-   document.addEventListener('mouseup', e => {
-  isDragging = false;
-  sticker.style.cursor = 'grab';
+    document.addEventListener('mouseup', e => {
+      if (isDragging) {
+        isDragging = false;
+        sticker.style.cursor = 'grab';
+        sticker.style.zIndex = 10;
 
-  // Add sparkle
-  const sparkle = document.createElement('div');
-  sparkle.className = 'sparkle';
-  sparkle.style.left = `${e.pageX - 10}px`;
-  sparkle.style.top = `${e.pageY - 10}px`;
-  document.body.appendChild(sparkle);
+        // ✨ Sparkle Effect
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = `${e.pageX - 10}px`;
+        sparkle.style.top = `${e.pageY - 10}px`;
+        document.body.appendChild(sparkle);
 
-  setTimeout(() => {
-    sparkle.remove();
-  }, 1000);
-});
-
+        setTimeout(() => {
+          sparkle.remove();
+        }, 1000);
+      }
+    });
+  });
 </script>
+
 
 </body>
 </html>
