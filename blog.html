@@ -161,105 +161,127 @@
 
   <a href="index.html">← Back to Dashboard</a>
 
-  <script>
-    function loadNotes() {
-      const saved = localStorage.getItem("blogNotes");
-      const archived = localStorage.getItem("archivedNotes");
+<script>
+  function loadNotes() {
+    const saved = localStorage.getItem("blogNotes");
+    const archived = localStorage.getItem("archivedNotes");
 
-      if (saved) {
-        document.getElementById("notes").innerHTML = saved;
-        makeDraggable();
+    if (saved) {
+      document.getElementById("notes").innerHTML = saved;
+    }
+    if (archived) {
+      document.getElementById("archive").innerHTML = archived;
+    }
+
+    makeDraggable();
+    rebindButtons();
+  }
+
+  function postNote() {
+    const text = document.getElementById("entry").value.trim();
+    const category = document.getElementById("category").value;
+
+    if (!text) return;
+
+    const now = new Date();
+    const timestamp = now.toLocaleString();
+
+    const note = document.createElement("div");
+    note.className = `note ${category}`;
+    note.setAttribute("data-category", category);
+    note.setAttribute("draggable", "true");
+    note.innerHTML = `
+      <button class="delete-btn">x</button>
+      <button class="archive-btn">Archive</button>
+      ${text}
+      <time>${timestamp}</time>
+    `;
+
+    document.getElementById("notes").prepend(note);
+    document.getElementById("entry").value = "";
+    saveNotes();
+    makeDraggable();
+    rebindButtons();
+  }
+
+  function archiveNote(note) {
+    document.getElementById("archive").prepend(note);
+    saveNotes();
+    saveArchive();
+    rebindButtons();
+  }
+
+  function deleteNote(note) {
+    note.remove();
+    saveNotes();
+    saveArchive();
+  }
+
+  function saveNotes() {
+    localStorage.setItem("blogNotes", document.getElementById("notes").innerHTML);
+  }
+
+  function saveArchive() {
+    localStorage.setItem("archivedNotes", document.getElementById("archive").innerHTML);
+  }
+
+  function filterNotes(category) {
+    const notes = document.querySelectorAll(".note");
+    notes.forEach(note => {
+      if (category === "all" || note.dataset.category === category) {
+        note.style.display = "block";
+      } else {
+        note.style.display = "none";
       }
-      if (archived) {
-        document.getElementById("archive").innerHTML = archived;
-      }
-    }
+    });
+  }
 
-    function postNote() {
-      const text = document.getElementById("entry").value.trim();
-      const category = document.getElementById("category").value;
+  function rebindButtons() {
+    const deleteBtns = document.querySelectorAll(".delete-btn");
+    deleteBtns.forEach(btn => {
+      btn.onclick = () => deleteNote(btn.parentElement);
+    });
 
-      if (!text) return;
+    const archiveBtns = document.querySelectorAll(".archive-btn");
+    archiveBtns.forEach(btn => {
+      btn.onclick = () => archiveNote(btn.parentElement);
+    });
+  }
 
-      const now = new Date();
-      const timestamp = now.toLocaleString();
+  function makeDraggable() {
+    const notes = document.querySelectorAll(".note");
+    notes.forEach(note => {
+      note.onmousedown = function (event) {
+        note.style.position = 'absolute';
+        note.style.zIndex = 1000;
 
-      const note = document.createElement("div");
-      note.className = `note ${category}`;
-      note.setAttribute("data-category", category);
-      note.setAttribute("draggable", "true");
-      note.innerHTML = `
-        <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">x</button>
-        <button class="archive-btn" onclick="archiveNote(this.parentElement)">Archive</button>
-        ${text}
-        <time>${timestamp}</time>
-      `;
-
-      document.getElementById("notes").prepend(note);
-      document.getElementById("entry").value = "";
-      saveNotes();
-      makeDraggable();
-    }
-
-    function archiveNote(note) {
-      document.getElementById("archive").prepend(note);
-      saveNotes();
-      saveArchive();
-    }
-
-    function saveNotes() {
-      localStorage.setItem("blogNotes", document.getElementById("notes").innerHTML);
-    }
-
-    function saveArchive() {
-      localStorage.setItem("archivedNotes", document.getElementById("archive").innerHTML);
-    }
-
-    function filterNotes(category) {
-      const notes = document.querySelectorAll(".note");
-      notes.forEach(note => {
-        if (category === "all" || note.dataset.category === category) {
-          note.style.display = "block";
-        } else {
-          note.style.display = "none";
+        function moveAt(pageX, pageY) {
+          note.style.left = pageX - note.offsetWidth / 2 + 'px';
+          note.style.top = pageY - note.offsetHeight / 2 + 'px';
         }
-      });
-    }
 
-    function makeDraggable() {
-      const notes = document.querySelectorAll(".note");
-      notes.forEach(note => {
-        note.onmousedown = function (event) {
-          note.style.position = 'absolute';
-          note.style.zIndex = 1000;
+        moveAt(event.pageX, event.pageY);
 
-          function moveAt(pageX, pageY) {
-            note.style.left = pageX - note.offsetWidth / 2 + 'px';
-            note.style.top = pageY - note.offsetHeight / 2 + 'px';
-          }
-
+        function onMouseMove(event) {
           moveAt(event.pageX, event.pageY);
+        }
 
-          function onMouseMove(event) {
-            moveAt(event.pageX, event.pageY);
-          }
+        document.addEventListener('mousemove', onMouseMove);
 
-          document.addEventListener('mousemove', onMouseMove);
-
-          note.onmouseup = function () {
-            document.removeEventListener('mousemove', onMouseMove);
-            note.onmouseup = null;
-            saveNotes();
-          };
+        note.onmouseup = function () {
+          document.removeEventListener('mousemove', onMouseMove);
+          note.onmouseup = null;
+          saveNotes();
         };
+      };
 
-        note.ondragstart = function () {
-          return false;
-        };
-      });
-    }
+      note.ondragstart = function () {
+        return false;
+      };
+    });
+  }
 
-    loadNotes();
-  </script>
+  loadNotes();
+</script>
 </body>
 </html>
