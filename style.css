@@ -108,8 +108,8 @@ body {
 /* Stamp Grid */
 .stamp-grid {
   position: absolute;
-  top: 52%;
-  left: 64.5%;
+  top: 44%;
+  left: 62%;
   transform: translate(-50%, -50%);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
