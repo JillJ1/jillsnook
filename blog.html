@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jill’s Blog Journal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #fff8ec;
+      font-family: 'Special Elite', 'Courier New', monospace;
+      padding: 40px;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: #5e4030;
+    }
+
+    #entry-form {
+      max-width: 600px;
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    textarea, select {
+      width: 100%;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    textarea {
+      height: 120px;
+      resize: none;
+    }
+
+    button {
+      align-self: flex-end;
+      background: #f5d3d7;
+      border: none;
+      padding: 10px 20px;
+      font-family: inherit;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: #f1c1c7;
+    }
+
+    #filter-buttons {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    #filter-buttons button {
+      background: #e8ddd2;
+      margin: 0 6px;
+      padding: 6px 12px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      border-radius: 4px;
+    }
+
+    #notes, #archive {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .note {
+      position: relative;
+      width: 200px;
+      min-height: 120px;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+      white-space: pre-wrap;
+      cursor: grab;
+    }
+
+    .note time {
+      font-size: 0.7rem;
+      color: #6d4b4b;
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      background: transparent;
+      border: none;
+      color: #333;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .archive-btn {
+      position: absolute;
+      top: 5px;
+      left: 8px;
+      background: transparent;
+      border: none;
+      font-size: 0.8rem;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .blog { background: #ffe6ee; border: 1px solid #e3a9bc; transform: rotate(-2deg); }
+    .faith { background: #e3f7d5; border: 1px solid #9dc98d; transform: rotate(1deg); }
+    .career { background: #fffec8; border: 1px solid #d1c37e; transform: rotate(-3deg); }
+    .personal { background: #dbe7ff; border: 1px solid #9ab7e4; transform: rotate(2deg); }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      text-decoration: none;
+      color: #7a4c58;
+    }
+  </style>
+</head>
+<body>
+  <h1>📓 Jill’s Blog Journal</h1>
+
+  <div id="entry-form">
+    <textarea id="entry" placeholder="Write something..."></textarea>
+    <select id="category">
+      <option value="blog">Blog</option>
+      <option value="faith">Faith</option>
+      <option value="career">Career</option>
+      <option value="personal">Personal</option>
+    </select>
+    <button onclick="postNote()">Post</button>
+  </div>
+
+  <div id="filter-buttons">
+    <button onclick="filterNotes('all')">All</button>
+    <button onclick="filterNotes('blog')">Blog</button>
+    <button onclick="filterNotes('faith')">Faith</button>
+    <button onclick="filterNotes('career')">Career</button>
+    <button onclick="filterNotes('personal')">Personal</button>
+  </div>
+
+  <div id="notes"></div>
+
+  <h2 style="text-align: center; margin-top: 40px;">📁 Archived Notes</h2>
+  <div id="archive"></div>
+
+  <a href="index.html">← Back to Dashboard</a>
+
+  <script>
+    function loadNotes() {
+      const saved = localStorage.getItem("blogNotes");
+      const archived = localStorage.getItem("archivedNotes");
+
+      if (saved) {
+        document.getElementById("notes").innerHTML = saved;
+        makeDraggable();
+      }
+      if (archived) {
+        document.getElementById("archive").innerHTML = archived;
+      }
+    }
+
+    function postNote() {
+      const text = document.getElementById("entry").value.trim();
+      const category = document.getElementById("category").value;
+
+      if (!text) return;
+
+      const now = new Date();
+      const timestamp = now.toLocaleString();
+
+      const note = document.createElement("div");
+      note.className = `note ${category}`;
+      note.setAttribute("data-category", category);
+      note.setAttribute("draggable", "true");
+      note.innerHTML = `
+        <button class="delete-btn" onclick="this.parentElement.remove(); saveNotes()">x</button>
+        <button class="archive-btn" onclick="archiveNote(this.parentElement)">Archive</button>
+        ${text}
+        <time>${timestamp}</time>
+      `;
+
+      document.getElementById("notes").prepend(note);
+      document.getElementById("entry").value = "";
+      saveNotes();
+      makeDraggable();
+    }
+
+    function archiveNote(note) {
+      document.getElementById("archive").prepend(note);
+      saveNotes();
+      saveArchive();
+    }
+
+    function saveNotes() {
+      localStorage.setItem("blogNotes", document.getElementById("notes").innerHTML);
+    }
+
+    function saveArchive() {
+      localStorage.setItem("archivedNotes", document.getElementById("archive").innerHTML);
+    }
+
+    function filterNotes(category) {
+      const notes = document.querySelectorAll(".note");
+      notes.forEach(note => {
+        if (category === "all" || note.dataset.category === category) {
+          note.style.display = "block";
+        } else {
+          note.style.display = "none";
+        }
+      });
+    }
+
+    function makeDraggable() {
+      const notes = document.querySelectorAll(".note");
+      notes.forEach(note => {
+        note.onmousedown = function (event) {
+          note.style.position = 'absolute';
+          note.style.zIndex = 1000;
+
+          function moveAt(pageX, pageY) {
+            note.style.left = pageX - note.offsetWidth / 2 + 'px';
+            note.style.top = pageY - note.offsetHeight / 2 + 'px';
+          }
+
+          moveAt(event.pageX, event.pageY);
+
+          function onMouseMove(event) {
+            moveAt(event.pageX, event.pageY);
+          }
+
+          document.addEventListener('mousemove', onMouseMove);
+
+          note.onmouseup = function () {
+            document.removeEventListener('mousemove', onMouseMove);
+            note.onmouseup = null;
+            saveNotes();
+          };
+        };
+
+        note.ondragstart = function () {
+          return false;
+        };
+      });
+    }
+
+    loadNotes();
+  </script>
+</body>
+</html>
