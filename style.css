@@ -166,3 +166,23 @@ body {
   line-height: 1.3;
   color: #5e404a;
 }
+/* Yellow Sticky Note Variation */
+.sticky-note.yellow {
+  background: #fffec8;
+  border: 1px solid #d1c37e;
+  color: #5f5502;
+  left: auto;
+  right: 5%;
+  top: auto;
+  bottom: 5%;
+  transform: rotate(2deg);
+}
+
+.sticky-note.yellow h4 {
+  color: #7c6f03;
+}
+
+.sticky-note.yellow p {
+  color: #5f5502;
+}
+
