@@ -21,27 +21,19 @@
   <div id="dashboard" style="display:none;">
     <div class="passport-container">
       <img src="paa.PNG" class="passport-bg" alt="passport background" />
-      
-<div class="sticky-note">
-  <h4>Verse of the Day ✝️</h4>
-  <p>“Let all that you do be done in love.”<br>— 1 Corinthians 16:14</p>
-</div>
-      
+
+      <!-- Sticky Note for Verse of the Day -->
+      <div class="sticky-note">
+        <h4>Verse of the Day ✝️</h4>
+        <p>“Let all that you do be done in love.”<br>— 1 Corinthians 16:14</p>
+      </div>
+
       <!-- ID PHOTO -->
       <a href="https://www.instagram.com/jilllchristina/" target="_blank">
         <img src="pom.JPG" class="id-photo" alt="ID photo">
       </a>
-<!-- Stamp Grid (2 Rows x 3 Columns) -->
-<div class="stamp-grid">
-  <img src="blog.png" class="stamp tilt-left" onclick="goTo('blog')" alt="Blog">
-  <img src="f.PNG" class="stamp tilt-right" onclick="goTo('favorites')" alt="Favorites">
-  <img src="am.PNG" class="stamp tilt-left" onclick="goTo('about')" alt="About Me">
-  <img src="l.PNG" class="stamp tilt-right" onclick="goTo('linkedin')" alt="LinkedIn">
-  <img src="career.png" class="stamp tilt-left" onclick="goTo('career')" alt="Career Journal">
-  <img src="faith.png" class="stamp tilt-right" onclick="goTo('faith')" alt="Faith">
-</div>
 
-      <!-- Stamp Section -->
+      <!-- Stamp Grid (2 Rows x 3 Columns) -->
       <div class="stamp-grid">
         <img src="blog.png" class="stamp tilt-left" onclick="goTo('blog')" alt="Blog">
         <img src="f.PNG" class="stamp tilt-right" onclick="goTo('favorites')" alt="Favorites">
@@ -52,7 +44,11 @@
       </div>
     </div>
   </div>
-<audio id="stampSound" src="stamp-click.mp3" preload="auto"></audio>
+
+  <!-- Audio -->
+  <audio id="stampSound" src="stamp-click.mp3" preload="auto"></audio>
+
+  <!-- Scripts -->
   <script>
     function checkPassword() {
       const password = document.getElementById("passwordInput").value;
@@ -65,14 +61,13 @@
     }
 
     function goTo(section) {
-  const stampSound = document.getElementById("stampSound");
-  if (stampSound) {
-    stampSound.currentTime = 0;
-    stampSound.play();
-  }
-
-  alert("Navigating to: " + section + " (coming soon!)");
-}
+      const stampSound = document.getElementById("stampSound");
+      if (stampSound) {
+        stampSound.currentTime = 0;
+        stampSound.play();
+      }
+      alert("Navigating to: " + section + " (coming soon!)");
+    }
   </script>
 </body>
 </html>
