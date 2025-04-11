@@ -58,11 +58,11 @@ body {
 /* ID Photo */
 .id-photo {
   position: absolute;
-  top: 25.5%;
-  left: 10.6%;
-  width: 120px;
-  height: 130px;
-  object-fit: cover;
+  top: 23%;
+  left: 21.8%;
+  width: 271px;
+  height: 271px;
+  object-fit: contain;
   border-radius: 8px;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
   z-index: 2;
