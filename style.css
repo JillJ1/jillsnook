@@ -104,3 +104,36 @@ body {
 .stamp:hover {
   transform: scale(1.05) rotate(0deg);
 }
+
+/* Stamp Grid */
+.stamp-grid {
+  position: absolute;
+  top: 52%;
+  left: 64.5%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px 50px;
+  z-index: 2;
+}
+
+/* Individual Stamp */
+.stamp {
+  width: 120px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+/* Tilt Styles */
+.tilt-left {
+  transform: rotate(-3deg);
+}
+
+.tilt-right {
+  transform: rotate(4deg);
+}
+
+.stamp:hover {
+  transform: scale(1.05) rotate(0deg);
+}
