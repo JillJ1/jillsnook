@@ -94,7 +94,7 @@ body {
   height: 65px; 
   width: auto;
   transform: translate(-50%, -50%) rotate(-2.5deg);
-  object-fit: contain;
+  object-fit: cover;
   z-index: 1;
   pointer-events: none;
   opacity: 1;
