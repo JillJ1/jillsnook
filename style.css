@@ -55,12 +55,31 @@ body {
   z-index: 0;
 }
 
-/* 🎶 Music Bar Styles */
+/* ID Photo */
+.id-photo {
+  position: absolute;
+  top: 25.5%;
+  left: 10.6%;
+  width: 120px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  z-index: 2;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.id-photo:hover {
+  transform: scale(1.02);
+}
+
+/* Music Bar */
 .music-bar {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 50px;
+  height: 60px;
   z-index: 3;
   display: flex;
   align-items: center;
@@ -68,8 +87,8 @@ body {
 }
 
 .paper-bg {
-  width: 80%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   position: absolute;
   z-index: 1;
@@ -85,7 +104,7 @@ body {
 }
 
 .record {
-  width: 60px;
+  width: 50px;
   animation: spin 6s linear infinite;
 }
 
