@@ -97,5 +97,31 @@
       alert("Navigating to: " + section + " (coming soon!)");
     }
   </script>
+  <script>
+  document.querySelectorAll('.sticker').forEach(sticker => {
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    sticker.addEventListener('mousedown', e => {
+      isDragging = true;
+      offsetX = e.offsetX;
+      offsetY = e.offsetY;
+      sticker.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (isDragging) {
+        sticker.style.left = `${e.pageX - offsetX}px`;
+        sticker.style.top = `${e.pageY - offsetY}px`;
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      sticker.style.cursor = 'grab';
+    });
+  });
+</script>
+
 </body>
 </html>
